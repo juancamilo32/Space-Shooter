@@ -1,0 +1,59 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Player : MonoBehaviour
+{
+
+    // Movement speed of the player
+    [SerializeField]
+    float movementSpeed = 8.5f;
+
+    // Map boundary in the x axis
+    float xAxisMapLimit = 11.3f;
+
+    //Map boundary in the y axis
+    float yAxisMapLimit = -3.8f;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        // Set starting position for the player
+        transform.position = Vector3.zero;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        CalculateMovement();
+        SetMapBoundaries();
+    }
+
+    // Function used to move the player in the x and y axis
+    void CalculateMovement()
+    {
+        // Input for player movement
+        float horizontalInput = Input.GetAxis("Horizontal");
+        float verticalInput = Input.GetAxis("Vertical");
+        Vector3 movementVector = new Vector3(horizontalInput, verticalInput, 0);
+        transform.Translate(movementVector * Time.deltaTime * movementSpeed);
+    }
+
+    // Function used to set map boundaries for the player
+    void SetMapBoundaries()
+    {
+        // Map boundaries in y axis
+        transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, yAxisMapLimit, 0), 0);
+
+        // Map boundaries in x axis
+        if (transform.position.x >= xAxisMapLimit)
+        {
+            transform.position = new Vector3(-xAxisMapLimit, transform.position.y, 0);
+        }
+        else if (transform.position.x <= -xAxisMapLimit)
+        {
+            transform.position = new Vector3(xAxisMapLimit, transform.position.y, 0);
+        }
+    }
+
+}
