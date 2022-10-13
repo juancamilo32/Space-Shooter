@@ -12,9 +12,18 @@ public class Player : MonoBehaviour
     // Map boundary in the x axis
     float xAxisMapLimit = 11.3f;
 
-    //Map boundary in the y axis
+    // Map boundary in the y axis
     float yAxisMapLimit = -3.8f;
 
+    // Shooting cooldown
+    [SerializeField]
+    float fireRate = 0.2f;
+    // Variable to determine if player can shoot
+    float canFire = -1f;
+
+    // Laser prefab
+    [SerializeField]
+    GameObject laserPrefab;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,6 +36,10 @@ public class Player : MonoBehaviour
     {
         CalculateMovement();
         SetMapBoundaries();
+        if (Input.GetKey(KeyCode.Space) && Time.time > canFire)
+        {
+            ShootLaser();
+        }
     }
 
     // Function used to move the player in the x and y axis
@@ -54,6 +67,14 @@ public class Player : MonoBehaviour
         {
             transform.position = new Vector3(xAxisMapLimit, transform.position.y, 0);
         }
+    }
+
+    // Function used to spawn lasers
+    void ShootLaser()
+    {
+        canFire = Time.time + fireRate;
+        Vector3 spawnPosition = transform.position + Vector3.up;
+        Instantiate(laserPrefab, spawnPosition, Quaternion.identity);
     }
 
 }
