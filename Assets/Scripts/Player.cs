@@ -18,8 +18,13 @@ public class Player : MonoBehaviour
     // Shooting cooldown
     [SerializeField]
     float fireRate = 0.2f;
+
     // Variable to determine if player can shoot
     float canFire = -1f;
+
+    // Player health
+    [SerializeField]
+    int lives = 3;
 
     // Laser prefab
     [SerializeField]
@@ -75,6 +80,15 @@ public class Player : MonoBehaviour
         canFire = Time.time + fireRate;
         Vector3 spawnPosition = transform.position + Vector3.up;
         Instantiate(laserPrefab, spawnPosition, Quaternion.identity);
+    }
+
+    public void TakeDamage()
+    {
+        lives--;
+        if (lives < 1)
+        {
+            Destroy(gameObject);
+        }
     }
 
 }
