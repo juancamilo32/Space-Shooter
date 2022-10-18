@@ -29,11 +29,21 @@ public class Player : MonoBehaviour
     // Laser prefab
     [SerializeField]
     GameObject laserPrefab;
+
+
+    SpawnManager spawnManager;
+
     // Start is called before the first frame update
     void Start()
     {
         // Set starting position for the player
         transform.position = Vector3.zero;
+
+        spawnManager = GameObject.FindObjectOfType<SpawnManager>().GetComponent<SpawnManager>();
+        if (!spawnManager)
+        {
+            Debug.LogError("Spawn Manager is NULL.");
+        }
     }
 
     // Update is called once per frame
@@ -87,6 +97,7 @@ public class Player : MonoBehaviour
         lives--;
         if (lives < 1)
         {
+            spawnManager.OnPlayerDeath();
             Destroy(gameObject);
         }
     }
