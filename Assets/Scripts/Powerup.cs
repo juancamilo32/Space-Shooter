@@ -2,12 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Powerup : MonoBehaviour
 {
 
-    // Movement speed of the enemy
     [SerializeField]
-    float movementSpeed = 4f;
+    float movementSpeed = 3f;
 
     // Update is called once per frame
     void Update()
@@ -15,8 +14,7 @@ public class Enemy : MonoBehaviour
         transform.Translate(Vector3.down * Time.deltaTime * movementSpeed);
         if (transform.position.y <= -5.5f)
         {
-            float randomX = Random.Range(-8.5f, 8.5f);
-            transform.position = new Vector3(randomX, 7.5f, 0);
+            Destroy(gameObject);
         }
     }
 
@@ -27,15 +25,11 @@ public class Enemy : MonoBehaviour
             Player player = other.GetComponent<Player>();
             if (player)
             {
-                player.TakeDamage();
+                player.ActivateTripleShot();
             }
             Destroy(gameObject);
         }
-        else if (other.CompareTag("Laser"))
-        {
-            Destroy(other.gameObject);
-            Destroy(gameObject);
-        }
     }
+
 
 }
