@@ -5,7 +5,6 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
 
-    // Movement speed of the player
     [SerializeField]
     float movementSpeed = 8.5f;
 
@@ -26,9 +25,14 @@ public class Player : MonoBehaviour
     [SerializeField]
     int lives = 3;
 
-    // Laser prefab
+    [SerializeField]
+    bool isTripleShotActive = false;
+
     [SerializeField]
     GameObject laserPrefab;
+
+    [SerializeField]
+    GameObject tripleShotPrefab;
 
 
     SpawnManager spawnManager;
@@ -89,7 +93,15 @@ public class Player : MonoBehaviour
     {
         canFire = Time.time + fireRate;
         Vector3 spawnPosition = transform.position + Vector3.up;
-        Instantiate(laserPrefab, spawnPosition, Quaternion.identity);
+        if (isTripleShotActive)
+        {
+            Instantiate(tripleShotPrefab, transform.position, Quaternion.identity);
+        }
+        else
+        {
+
+            Instantiate(laserPrefab, spawnPosition, Quaternion.identity);
+        }
     }
 
     public void TakeDamage()
@@ -100,6 +112,18 @@ public class Player : MonoBehaviour
             spawnManager.OnPlayerDeath();
             Destroy(gameObject);
         }
+    }
+
+    public void ActivateTripleShot()
+    {
+        isTripleShotActive = true;
+        StartCoroutine(TripleShotPowerDownRoutine());
+    }
+
+    IEnumerator TripleShotPowerDownRoutine()
+    {
+        yield return new WaitForSeconds(5f);
+        isTripleShotActive = false;
     }
 
 }
