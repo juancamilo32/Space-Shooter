@@ -26,13 +26,16 @@ public class Player : MonoBehaviour
     int lives = 3;
 
     [SerializeField]
-    bool isTripleShotActive = false;
-
-    [SerializeField]
     GameObject laserPrefab;
 
     [SerializeField]
     GameObject tripleShotPrefab;
+
+    [SerializeField]
+    GameObject shield;
+
+    bool isShieldActive = false;
+    bool isTripleShotActive = false;
 
 
     SpawnManager spawnManager;
@@ -106,6 +109,12 @@ public class Player : MonoBehaviour
 
     public void TakeDamage()
     {
+        if (isShieldActive)
+        {
+            isShieldActive = false;
+            shield.SetActive(false);
+            return;
+        }
         lives--;
         if (lives < 1)
         {
@@ -136,6 +145,12 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(5f);
         movementSpeed /= 2;
+    }
+
+    public void ActivateShield()
+    {
+        isShieldActive = true;
+        shield.SetActive(true);
     }
 
 }
