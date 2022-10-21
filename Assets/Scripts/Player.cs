@@ -24,6 +24,7 @@ public class Player : MonoBehaviour
     // Player health
     [SerializeField]
     int lives = 3;
+    int score = 0;
 
     [SerializeField]
     GameObject laserPrefab;
@@ -39,6 +40,7 @@ public class Player : MonoBehaviour
 
 
     SpawnManager spawnManager;
+    UIManager uIManager;
 
     // Start is called before the first frame update
     void Start()
@@ -46,10 +48,15 @@ public class Player : MonoBehaviour
         // Set starting position for the player
         transform.position = Vector3.zero;
 
+        uIManager = GameObject.FindObjectOfType<UIManager>().GetComponent<UIManager>();
         spawnManager = GameObject.FindObjectOfType<SpawnManager>().GetComponent<SpawnManager>();
         if (!spawnManager)
         {
             Debug.LogError("Spawn Manager is NULL.");
+        }
+        if (!uIManager)
+        {
+            Debug.LogError("UI Manager is NULL.");
         }
     }
 
@@ -107,6 +114,7 @@ public class Player : MonoBehaviour
         }
     }
 
+    // Function that controls the damage taken by the player
     public void TakeDamage()
     {
         if (isShieldActive)
@@ -116,6 +124,7 @@ public class Player : MonoBehaviour
             return;
         }
         lives--;
+        uIManager.UpdateLives(lives);
         if (lives < 1)
         {
             spawnManager.OnPlayerDeath();
@@ -123,34 +132,46 @@ public class Player : MonoBehaviour
         }
     }
 
+    // Function that activates the triple shot powerup
     public void ActivateTripleShot()
     {
         isTripleShotActive = true;
         StartCoroutine(TripleShotPowerDownRoutine());
     }
 
+    // Routine to countdown the triple shot powerup
     IEnumerator TripleShotPowerDownRoutine()
     {
         yield return new WaitForSeconds(5f);
         isTripleShotActive = false;
     }
 
+    // Function that activates the speed powerup
     public void ActivateSpeed()
     {
         movementSpeed *= 2;
         StartCoroutine(SpeedPowerDownRoutine());
     }
 
+    // Routine to countdown the speed powerup
     IEnumerator SpeedPowerDownRoutine()
     {
         yield return new WaitForSeconds(5f);
         movementSpeed /= 2;
     }
 
+    // Function that activates the shield powerup
     public void ActivateShield()
     {
         isShieldActive = true;
         shield.SetActive(true);
+    }
+
+    // Function to update the score value and score text
+    public void AddScore(int points)
+    {
+        score += points;
+        uIManager.UpdateScore(score);
     }
 
 }

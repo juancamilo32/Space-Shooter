@@ -15,6 +15,7 @@ public class Laser : MonoBehaviour
         CalculateMovement();
     }
 
+    // Function related to the movement of the laser
     void CalculateMovement()
     {
         transform.Translate(Vector3.up * Time.deltaTime * speed);
