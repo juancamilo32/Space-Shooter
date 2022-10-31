@@ -34,6 +34,10 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     GameObject shield;
+    [SerializeField]
+    GameObject rightEngine;
+    [SerializeField]
+    GameObject leftEngine;
 
     bool isShieldActive = false;
     bool isTripleShotActive = false;
@@ -123,7 +127,17 @@ public class Player : MonoBehaviour
             shield.SetActive(false);
             return;
         }
+        
         lives--;
+        if (lives == 2)
+        {
+            rightEngine.SetActive(true);
+        }
+        else if (lives == 1)
+        {
+            leftEngine.SetActive(true);
+        }
+
         uIManager.UpdateLives(lives);
         if (lives < 1)
         {

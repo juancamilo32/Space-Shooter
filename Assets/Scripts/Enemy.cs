@@ -10,10 +10,26 @@ public class Enemy : MonoBehaviour
     float movementSpeed = 4f;
 
     Player player;
+    Animator animator;
+    BoxCollider2D boxCollider2D;
 
     private void Start()
     {
         player = GameObject.FindObjectOfType<Player>().GetComponent<Player>();
+        animator = GetComponent<Animator>();
+        boxCollider2D = GetComponent<BoxCollider2D>();
+        if (!player)
+        {
+            Debug.LogError("Player is NULL.");
+        }
+        if (!animator)
+        {
+            Debug.LogError("Animator is NULL.");
+        }
+        if (!boxCollider2D)
+        {
+            Debug.LogError("Collider is NULL.");
+        }
     }
 
     // Update is called once per frame
@@ -36,7 +52,9 @@ public class Enemy : MonoBehaviour
             {
                 player.TakeDamage();
             }
-            Destroy(gameObject);
+            animator.SetTrigger("OnEnemyDeath");
+            boxCollider2D.enabled = false;
+            Destroy(gameObject, 2.6f);
         }
         else if (other.CompareTag("Laser"))
         {
@@ -45,7 +63,9 @@ public class Enemy : MonoBehaviour
             {
                 player.AddScore(10);
             }
-            Destroy(gameObject);
+            animator.SetTrigger("OnEnemyDeath");
+            boxCollider2D.enabled = false;
+            Destroy(gameObject, 2.6f);
         }
     }
 
