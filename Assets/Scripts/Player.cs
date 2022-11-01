@@ -42,9 +42,12 @@ public class Player : MonoBehaviour
     bool isShieldActive = false;
     bool isTripleShotActive = false;
 
+    [SerializeField]
+    AudioClip laserSFX;
 
     SpawnManager spawnManager;
     UIManager uIManager;
+    AudioSource audioSource;
 
     // Start is called before the first frame update
     void Start()
@@ -54,6 +57,7 @@ public class Player : MonoBehaviour
 
         uIManager = GameObject.FindObjectOfType<UIManager>().GetComponent<UIManager>();
         spawnManager = GameObject.FindObjectOfType<SpawnManager>().GetComponent<SpawnManager>();
+        audioSource = GetComponent<AudioSource>();
         if (!spawnManager)
         {
             Debug.LogError("Spawn Manager is NULL.");
@@ -61,6 +65,14 @@ public class Player : MonoBehaviour
         if (!uIManager)
         {
             Debug.LogError("UI Manager is NULL.");
+        }
+        if (!audioSource)
+        {
+            Debug.LogError("Audio Source is NULL.");
+        }
+        else
+        {
+            audioSource.clip = laserSFX;
         }
     }
 
@@ -116,6 +128,9 @@ public class Player : MonoBehaviour
 
             Instantiate(laserPrefab, spawnPosition, Quaternion.identity);
         }
+
+        audioSource.Play();
+
     }
 
     // Function that controls the damage taken by the player
@@ -127,7 +142,7 @@ public class Player : MonoBehaviour
             shield.SetActive(false);
             return;
         }
-        
+
         lives--;
         if (lives == 2)
         {
