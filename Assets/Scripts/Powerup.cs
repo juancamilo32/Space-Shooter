@@ -11,6 +11,9 @@ public class Powerup : MonoBehaviour
     [SerializeField]
     int powerUpID; // Triple shot = 0, Speed = 1, Shield = 2
 
+    [SerializeField]
+    AudioClip powerUpSFX;
+
     // Update is called once per frame
     void Update()
     {
@@ -28,6 +31,7 @@ public class Powerup : MonoBehaviour
             Player player = other.GetComponent<Player>();
             if (player)
             {
+                AudioSource.PlayClipAtPoint(powerUpSFX, new Vector3(0, 1, -10), 0.4f);
                 switch (powerUpID)
                 {
                     case 0:

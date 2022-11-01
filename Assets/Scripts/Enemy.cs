@@ -12,12 +12,18 @@ public class Enemy : MonoBehaviour
     Player player;
     Animator animator;
     BoxCollider2D boxCollider2D;
+    AudioSource audioSource;
+
+    [SerializeField]
+    AudioClip explosionSFX;
+
 
     private void Start()
     {
         player = GameObject.FindObjectOfType<Player>().GetComponent<Player>();
         animator = GetComponent<Animator>();
         boxCollider2D = GetComponent<BoxCollider2D>();
+        audioSource = GetComponent<AudioSource>();
         if (!player)
         {
             Debug.LogError("Player is NULL.");
@@ -29,6 +35,14 @@ public class Enemy : MonoBehaviour
         if (!boxCollider2D)
         {
             Debug.LogError("Collider is NULL.");
+        }
+        if (!audioSource)
+        {
+            Debug.LogError("Audio Source is NULL.");
+        }
+        else
+        {
+            audioSource.clip = explosionSFX;
         }
     }
 
@@ -53,7 +67,9 @@ public class Enemy : MonoBehaviour
                 player.TakeDamage();
             }
             animator.SetTrigger("OnEnemyDeath");
+            movementSpeed = 0;
             boxCollider2D.enabled = false;
+            audioSource.Play();
             Destroy(gameObject, 2.6f);
         }
         else if (other.CompareTag("Laser"))
@@ -64,7 +80,9 @@ public class Enemy : MonoBehaviour
                 player.AddScore(10);
             }
             animator.SetTrigger("OnEnemyDeath");
+            movementSpeed = 0;
             boxCollider2D.enabled = false;
+            audioSource.Play();
             Destroy(gameObject, 2.6f);
         }
     }
