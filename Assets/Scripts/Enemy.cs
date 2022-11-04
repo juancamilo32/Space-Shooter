@@ -17,6 +17,11 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     AudioClip explosionSFX;
 
+    [SerializeField]
+    GameObject laserPrefab;
+    float fireRate = 3.0f;
+    float canFire = -1f;
+
 
     private void Start()
     {
@@ -49,6 +54,12 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        CalculateMovement();
+        Shooting();
+    }
+
+    void CalculateMovement()
+    {
         transform.Translate(Vector3.down * Time.deltaTime * movementSpeed);
         if (transform.position.y <= -5.5f)
         {
@@ -69,6 +80,7 @@ public class Enemy : MonoBehaviour
             animator.SetTrigger("OnEnemyDeath");
             movementSpeed = 0;
             boxCollider2D.enabled = false;
+            canFire = Mathf.Infinity;
             audioSource.Play();
             Destroy(gameObject, 2.6f);
         }
@@ -82,8 +94,19 @@ public class Enemy : MonoBehaviour
             animator.SetTrigger("OnEnemyDeath");
             movementSpeed = 0;
             boxCollider2D.enabled = false;
+            canFire = Mathf.Infinity;
             audioSource.Play();
             Destroy(gameObject, 2.6f);
+        }
+    }
+
+    void Shooting()
+    {
+        if (Time.time > canFire)
+        {
+            fireRate = Random.Range(3f, 7f);
+            canFire = Time.time + fireRate;
+            Instantiate(laserPrefab, transform.position, Quaternion.identity);
         }
     }
 
