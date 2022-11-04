@@ -51,6 +51,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 4
   explosionSFX: {fileID: 8300000, guid: a885c043fab7e46438bba03ba9dab6bc, type: 3}
+  laserPrefab: {fileID: 2601638265188954083, guid: 96598b48cfbe57a4998f21cc92cdc3c7, type: 3}
 --- !u!212 &123829488068402400
 SpriteRenderer:
   m_ObjectHideFlags: 0
