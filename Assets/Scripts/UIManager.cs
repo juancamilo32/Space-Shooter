@@ -9,6 +9,8 @@ public class UIManager : MonoBehaviour
 
     [SerializeField]
     TextMeshProUGUI scoreText;
+    [SerializeField]
+    TextMeshProUGUI bestScoreText;
 
     [SerializeField]
     Sprite[] liveSprites;
@@ -28,6 +30,7 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         scoreText.text = "Score: 0";
+        
         gameOverText.gameObject.SetActive(false);
         restartGameText.gameObject.SetActive(false);
         gameManager = GameObject.FindObjectOfType<GameManager>().GetComponent<GameManager>();
@@ -40,6 +43,11 @@ public class UIManager : MonoBehaviour
     public void UpdateScore(int score)
     {
         scoreText.text = "Score: " + score.ToString();
+    }
+
+    public void UpdateBestScore(int score)
+    {
+        bestScoreText.text = "Best: " + score.ToString();
     }
 
     public void UpdateLives(int currentHealth)

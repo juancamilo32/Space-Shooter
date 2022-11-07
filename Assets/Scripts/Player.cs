@@ -25,6 +25,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     int lives = 3;
     int score = 0;
+    int bestScore = 0;
 
     [SerializeField]
     GameObject laserPrefab;
@@ -76,6 +77,9 @@ public class Player : MonoBehaviour
         {
             audioSource.clip = laserSFX;
         }
+
+        bestScore = PlayerPrefs.GetInt("Score", 0);
+        uIManager.UpdateBestScore(bestScore);
     }
 
     // Update is called once per frame
@@ -160,6 +164,7 @@ public class Player : MonoBehaviour
         {
             spawnManager.OnPlayerDeath();
             Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+            CheckForBestScore();
             Destroy(gameObject);
         }
     }
@@ -204,6 +209,16 @@ public class Player : MonoBehaviour
     {
         score += points;
         uIManager.UpdateScore(score);
+    }
+
+    public void CheckForBestScore()
+    {
+        if (score > bestScore)
+        {
+            bestScore = score;
+            PlayerPrefs.SetInt("Score", bestScore);
+            uIManager.UpdateBestScore(bestScore);
+        }
     }
 
 }
