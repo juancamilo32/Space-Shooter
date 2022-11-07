@@ -38,6 +38,8 @@ public class Player : MonoBehaviour
     GameObject rightEngine;
     [SerializeField]
     GameObject leftEngine;
+    [SerializeField]
+    GameObject explosionPrefab;
 
     bool isShieldActive = false;
     bool isTripleShotActive = false;
@@ -157,6 +159,7 @@ public class Player : MonoBehaviour
         if (lives < 1)
         {
             spawnManager.OnPlayerDeath();
+            Instantiate(explosionPrefab, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
     }
