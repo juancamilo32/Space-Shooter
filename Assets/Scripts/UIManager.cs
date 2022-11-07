@@ -44,6 +44,10 @@ public class UIManager : MonoBehaviour
 
     public void UpdateLives(int currentHealth)
     {
+        if (currentHealth < 0)
+        {
+            currentHealth = 0;
+        }
         livesDisplay.sprite = liveSprites[currentHealth];
         if (currentHealth < 1)
         {
