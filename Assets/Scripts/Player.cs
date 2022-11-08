@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityStandardAssets.CrossPlatformInput;
 
 public class Player : MonoBehaviour
 {
@@ -87,18 +88,26 @@ public class Player : MonoBehaviour
     {
         CalculateMovement();
         SetMapBoundaries();
+#if UNITY_ANDROID
+        if ((Input.GetKey(KeyCode.Space) || CrossPlatformInputManager.GetButtonDown("Fire")) && Time.time > canFire)
+        {
+            ShootLaser();
+        }
+#else
         if (Input.GetKey(KeyCode.Space) && Time.time > canFire)
         {
             ShootLaser();
         }
+#endif
+
     }
 
     // Function used to move the player in the x and y axis
     void CalculateMovement()
     {
         // Input for player movement
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
+        float horizontalInput = CrossPlatformInputManager.GetAxis("Horizontal"); //Input.GetAxis("Horizontal");
+        float verticalInput = CrossPlatformInputManager.GetAxis("Vertical"); //Input.GetAxis("Vertical");
         Vector3 movementVector = new Vector3(horizontalInput, verticalInput, 0);
         transform.Translate(movementVector * Time.deltaTime * movementSpeed);
     }
